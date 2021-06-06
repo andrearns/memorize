@@ -33,25 +33,7 @@ struct ContentView: View {
                     }.padding(.horizontal)
                 }
                 HStack {
-                    Spacer()
-                    Button(action: {
-                        if emojiCount > 0 {
-                            emojiCount -= 1
-                        }
-                    }) {
-                        Image(systemName: "minus.circle")
-                    }
-                    Spacer()
-                    Text("Shuffle")
-                    Spacer()
-                    Button(action: {
-                        if emojiCount < emojis.count {
-                            emojiCount += 1
-                        }
-                    }) {
-                        Image(systemName: "plus.circle")
-                    }
-                    Spacer()
+                    
                 }
                 .font(.largeTitle)
                 .foregroundColor(.blue)
