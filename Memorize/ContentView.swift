@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["❤️", "🥩", "👽", "🧘🏻‍♂️", "👨‍🚀", "🤯", "🚀", "🏆", "🤘", "⏳", "☕️", "🥐", "🦷", "🦾", "👁", "⚠️"]
-    @State var emojiCount = 4
+    let viewModel: EmojiMemoryGame
+    
     
     var body: some View {
-        let sortedEmojis = emojis.sorted()
-        
         ZStack {
             VStack {
                 VStack {
@@ -26,8 +24,8 @@ struct ContentView: View {
                     Spacer()
                     VStack {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]){
-                            ForEach(sortedEmojis[0..<emojiCount], id: \.self) { emoji in
-                                CardView(emoji: emoji)
+                            ForEach(viewModel.cards) { card in
+                                CardView(card: card)
                             }.aspectRatio(2/3, contentMode: .fit)
                         }
                     }.padding(.horizontal)
@@ -43,26 +41,18 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    var emoji: String
-    @State var isFacedUp = false
+    let card: MemoryGame<String>.Card
     
     var body: some View {
-        
             ZStack {
                 let shape = RoundedRectangle(cornerRadius: 15.0)
                 
-                if isFacedUp {
+                if card.isFacedUp {
                     shape.stroke(lineWidth: 4.0).foregroundColor(.red)
                     shape.foregroundColor(.white)
-                    Text(emoji).font(.system(size: 35))
+                    Text(card.content).font(.system(size: 35))
                 } else {
                     shape.foregroundColor(.red)
-                }
-            }.onTapGesture {
-                if isFacedUp {
-                    isFacedUp = false
-                } else {
-                    isFacedUp = true
                 }
             }
     }
@@ -82,8 +72,10 @@ struct CardView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame()
+        ContentView(viewModel: game)
             .preferredColorScheme(.light)
     }
 }
